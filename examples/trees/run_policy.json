@@ -1,0 +1,68 @@
+{
+  "name": "Policy demo (15 Hz dummy)",
+  "tree": {
+    "version": "3.0",
+    "inputs": {
+      "controllers": {
+        "ur5e": {
+          "controller": "ur5e"
+        }
+      }
+    },
+    "root": {
+      "id": "run-for-20s",
+      "kind": "parallel",
+      "success_threshold": 1,
+      "failure_threshold": 1,
+      "metadata": {
+        "name": "Run the policy for 20 s"
+      },
+      "children": [
+        {
+          "id": "run-policy",
+          "kind": "action",
+          "service": "PolicyService",
+          "operation": "RunSingleArmPolicy",
+          "schema_version": "1.0.0",
+          "metadata": {
+            "name": "RunSingleArmPolicy (dummy, 15 Hz)"
+          },
+          "data": {
+            "motion_group": {
+              "ref": "value",
+              "data": {
+                "controller": "ur5e",
+                "motion_group": 0
+              }
+            },
+            "policy_url": {
+              "ref": "value",
+              "data": "ws://app-dummy-policy:8080"
+            }
+          }
+        },
+        {
+          "id": "episode-length",
+          "kind": "delay",
+          "delay_sec": 20,
+          "metadata": {
+            "name": "Episode length"
+          },
+          "child": {
+            "id": "episode-done",
+            "kind": "action",
+            "service": "GeneralService",
+            "operation": "Log",
+            "schema_version": "1.0.0",
+            "data": {
+              "data": {
+                "ref": "value",
+                "data": "20 s policy episode done"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+tests/
+.env
+.env.*
+!.env.template
+.nova
+Dockerfile
+.dockerignore

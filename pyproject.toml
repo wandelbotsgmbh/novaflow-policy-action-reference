@@ -1,0 +1,38 @@
+[project]
+name = "policyservice"
+version = "0.1.0"
+description = "Run a remote policy (openpi-style websocket) as a NovaFlow action"
+readme = "README.md"
+requires-python = ">=3.12"
+# NovaFlow SDK + types are pinned EXACTLY and move together with the NovaFlow
+# release on the instance (ADR-034/029): 0.1.4 pairs with NovaFlow >= 2026.8.68.
+# Their type ids hash the NOVA spec, so wandelbots-api-client stays at exactly
+# the version novaflow-types pins (26.6.0); it is listed because the action uses
+# it directly (action-chunk streaming). No wandelbots-nova: no released version
+# pins 26.6.0, and the action only needs the API client.
+dependencies = [
+    "loguru",
+    "msgpack>=1.1.0",
+    "novaflow-types==0.1.4",
+    "numpy>=2.0",
+    "pydantic>=2.12.4",
+    "wandelbots-api-client==26.6.0",
+    "wandelbots-novaflow==0.1.4",
+    "websockets>=14.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.1",
+    "pytest-asyncio>=1.3.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+python_files = ["test_*.py", "*_test.py"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+
+# `policies/dummy` is deliberately NOT a uv workspace member: it ships as its own
+# container with its own lockfile. Sync and test it from `policies/dummy`.

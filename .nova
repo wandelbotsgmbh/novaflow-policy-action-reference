@@ -1,0 +1,8 @@
+# `nova app install .` builds this image, pushes it to imageRegistry and installs it.
+# (skaffold.yaml does the same for both apps at once.)
+name: novaflow-policy-action
+type: app
+port: 3000
+imageRegistry: <your-registry>  # e.g. myregistry.azurecr.io/nova-apps
+# NOVA_API, NATS_BROKER (NovaFlow's own broker) and CELL_NAME are injected by the
+# app operator; nothing to set here. The policy server is an action input.

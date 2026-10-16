@@ -1,0 +1,6 @@
+apiVersion: v2
+name: novaflow-policy-action-skaffold
+description: Renders the action service's NOVA App resource (used by skaffold.yaml).
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

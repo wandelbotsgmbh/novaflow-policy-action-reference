@@ -1,0 +1,20 @@
+# In the cell the server is reachable as ws://app-dummy-policy:8080 (the
+# operator's service for every App forwards 8080 to `port`).
+app:
+  name: dummy-policy
+  namespace: cell
+  cellName: cell
+  appIcon: app_icon.png
+  port: 8000
+  # Secret in the cell namespace that lets the cell pull from your registry.
+  imagePullSecrets:
+    - name: <your-pull-secret>
+  environment:
+    - name: PORT
+      value: "8000"
+    # Joints of the robot it drives; the action checks this against the arm.
+    - name: DOF
+      value: "6"
+    - name: LOG_LEVEL
+      value: INFO
+image: <your-registry>/dummy-policy:latest  # skaffold sets this

@@ -1,0 +1,10 @@
+app:
+  name: novaflow-policy-action
+  namespace: cell
+  cellName: cell
+  appIcon: app_icon.png
+  port: 3000
+  # Secret in the cell namespace that lets the cell pull from your registry.
+  imagePullSecrets:
+    - name: <your-pull-secret>
+image: <your-registry>/novaflow-policy-action:latest  # skaffold sets this

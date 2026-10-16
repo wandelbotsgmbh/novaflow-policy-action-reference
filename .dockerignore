@@ -1,0 +1,16 @@
+.venv
+.venv/**
+**/.venv
+**/.venv/**
+.git
+__pycache__
+*.pyc
+
+# The policy server is its own container (policies/dummy/Dockerfile).
+policies/
+
+# Local-only.
+.env
+kubeconfig
+tests/
+examples/

@@ -1,0 +1,45 @@
+# Build both apps and install them into the cell as NOVA App resources:
+#
+#   KUBECONFIG=<instance kubeconfig> skaffold run
+#
+# Images are pushed to SKAFFOLD_DEFAULT_REPO (skaffold.env); the cell pulls them
+# with the pull secret set in each chart's values.yaml.
+apiVersion: skaffold/v4beta11
+kind: Config
+build:
+  tagPolicy:
+    inputDigest: {}
+  local:
+    concurrency: 0
+    useBuildkit: true
+    useDockerCLI: false
+    push: true
+  artifacts:
+    - image: novaflow-policy-action
+      context: .
+      docker:
+        dockerfile: Dockerfile
+      platforms: ["linux/amd64"]
+    - image: dummy-policy
+      context: policies/dummy
+      docker:
+        dockerfile: Dockerfile
+      platforms: ["linux/amd64"]
+manifests:
+  helm:
+    releases:
+      # The policy server first, so the action has something to talk to.
+      - name: dummy-policy
+        chartPath: ./policies/dummy/helm/skaffold-app
+        setValueTemplates:
+          app.namespace: '{{ env "NOVAFLOW_CELL" | default "cell" }}'
+          app.cellName: '{{ env "NOVAFLOW_CELL" | default "cell" }}'
+          image: "{{.IMAGE_FULLY_QUALIFIED_dummy_policy}}"
+      - name: novaflow-policy-action
+        chartPath: ./helm/skaffold-app
+        setValueTemplates:
+          app.namespace: '{{ env "NOVAFLOW_CELL" | default "cell" }}'
+          app.cellName: '{{ env "NOVAFLOW_CELL" | default "cell" }}'
+          image: "{{.IMAGE_FULLY_QUALIFIED_novaflow_policy_action}}"
+deploy:
+  kubectl: {}

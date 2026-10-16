@@ -1,0 +1,14 @@
+# `nova app install policies/dummy` builds, pushes and installs the dummy policy
+# server. In the cell it is reachable as ws://app-dummy-policy:8080.
+name: dummy-policy
+type: app
+port: 8000
+imageRegistry: <your-registry>  # e.g. myregistry.azurecr.io/nova-apps
+environment:
+  - name: PORT
+    value: "8000"
+  # Joints of the robot it drives; the action checks this against the arm.
+  - name: DOF
+    value: "6"
+  - name: LOG_LEVEL
+    value: "INFO"

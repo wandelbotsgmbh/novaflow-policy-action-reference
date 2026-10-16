@@ -1,0 +1,18 @@
+apiVersion: wandelbots.com/v1alpha1
+kind: App
+metadata:
+  name: {{ .Values.app.name | quote }}
+  namespace: {{ .Values.app.namespace | quote }}
+spec:
+  appIcon: {{ .Values.app.appIcon | quote }}
+  cellName: {{ .Values.app.cellName | quote }}
+  image: {{ .Values.image | quote }}
+  port: {{ .Values.app.port }}
+  {{- with .Values.app.environment }}
+  environment:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.app.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}

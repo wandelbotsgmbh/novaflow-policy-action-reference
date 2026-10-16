@@ -1,0 +1,34 @@
+[project]
+name = "dummy-policy"
+version = "0.1.0"
+description = "Dummy 15 Hz joint policy served over openpi's websocket protocol"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "loguru>=0.7",
+    "msgpack>=1.1",
+    "numpy>=2.0",
+    "pydantic-settings>=2.6",
+    "websockets>=14.1",
+]
+
+[project.scripts]
+dummy-policy = "dummy_policy.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["dummy_policy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
